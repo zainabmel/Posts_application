@@ -1,0 +1,681 @@
+{% load static %}
+{% static "/static" as baseUrl %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your logo detection with DetectIt landing page.">
+    <meta name="author" content="Devcrud">
+    <title>Post It | Posts Application landing page</title>
+    <!-- font icons -->
+    <link rel="stylesheet" href="{% static '/website_home/vendors/themify-icons/css/themify-icons.css'%}">
+    <!-- Bootstrap + LeadMark main styles -->
+	<link rel="stylesheet" href="{% static '/website_home/css/leadmark.css'%}">
+    <link rel="icon" href="{% static '/images/postslogo.png'%}" type = "image/x-icon" >
+
+    <style>
+        .box{
+            border-style: dashed;
+            height: 80px;
+            width: 220px;
+            border: 1.4px dashed rgba(255, 255, 255, 0.299);
+        }
+        
+          
+          .radiogroup {
+            padding: 30px 38px;
+            border-radius: 16px;
+            background: #ecf0f3;
+            box-shadow:
+              4px 4px 4px 0px #d1d9e6 inset,
+              -4px -4px 4px 0px #ffffff inset;
+          }
+          
+          
+          .wrapper {
+            margin: 8px 0;
+          }
+          
+          .state {
+            position: absolute;
+            top: 0;
+            right: 0;
+            opacity: 1e-5;
+            pointer-events: none;
+          }
+          
+          .label {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            color: #3a1858;
+          }
+          
+          .radioText {
+            margin-left: 16px;
+            font-weight: bold;
+            opacity: .8;
+            transition: opacity .2s linear, transform .2s ease-out;
+          }
+          
+          .indicator {
+            position: relative;
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+            box-shadow:
+              -8px -4px 8px 0px #ffffff,
+              8px 4px 12px 0px #d1d9e6;
+            overflow: hidden;
+          }
+          
+          .indicator::before,
+          .indicator::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            height: 80%;
+            width: 80%;
+            border-radius: 50%;
+          }
+          
+          .indicator::before {
+            box-shadow:
+              -4px -2px 4px 0px #d1d9e6,
+              4px 2px 8px 0px #fff;
+          }
+          
+          .indicator::after {
+            background-color: #ecf0f3;
+            box-shadow:
+              -4px -2px 4px 0px #fff,
+              4px 2px 8px 0px #d1d9e6;
+            transform: scale3d(1, 1, 1);
+            transition: opacity .25s ease-in-out, transform .25s ease-in-out;
+          }
+          
+          .state:checked ~ .label .indicator::after {
+            transform: scale3d(.975, .975, 1) translate3d(0, 10%, 0);
+            opacity: 0;
+          }
+          
+          .state:focus ~ .label .text {
+            transform: translate3d(8px, 0, 0);
+            opacity: 1;
+          }
+          
+          .label:hover .text {
+            opacity: 1;
+          }
+          .section.has-img-bg-ad {
+            position: relative;
+            background: url(../static/website_home/pic00.jpg) no-repeat center top fixed;
+            background-size: cover;
+            color: #fff;
+          }
+          
+          .section.has-img-bg-ad * {
+            position: relative;
+            z-index: 100;
+          }
+          
+          .section.has-img-bg-ad:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+          }
+
+          
+        .modal {
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
+
+    <!-- page Navigation -->
+    <nav class="navbar custom-navbar navbar-expand-md navbar-light fixed-top" data-spy="affix" data-offset-top="10">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{% static '/images/postslogo.png'%}" alt="logo">
+            </a>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">                     
+
+                    {% if authenticated is True %}
+                    <li class="nav-link text-primary font-weight-bold">Hello, {{name}}</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#your_post_option">Your post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#allposts">All Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Login</a>
+                    </li>
+                    {% endif %}
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login" class="ml-4 nav-link btn btn-primary btn-sm rounded">Post It!</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Of Second Navigation -->
+
+    <!-- Page Header -->
+    <header class="header">
+        <div class="overlay">
+            <h1 class="subtitle">Transform your thoughts into impactful posts</h1>
+            <h1 class="title">You can Post It!</h1>  
+        </div>  
+        <div class="shape">
+            <svg viewBox="0 0 1500 200">
+                <path d="m 0,240 h 1500.4828 v -71.92164 c 0,0 -286.2763,-81.79324 -743.19024,-81.79324 C 300.37862,86.28512 0,168.07836 0,168.07836 Z"/>
+            </svg>
+        </div>  
+        <div class="mouse-icon"><div class="wheel"></div></div>
+    </header>
+    <!-- End Of Page Header -->
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-6 pr-md-5 mb-4 mb-md-0">
+                    <h6 class="section-title mb-0">About Us</h6>
+                    <h6 class="section-subtitle mb-4">Post It providers</h6>
+                    <p>Welcome to Post It! The ultimate platform for all your posting needs. With Post It, you can effortlessly register, login, and manage your posts.
+
+                        At Post It, we understand the importance of social engagement. We provide an efficient application that saves you time and maximizes productivity, ensuring the best user experience.</p>
+                    <img src="{% static '/images/pic15.jpeg'%}" alt="" class="w-100 mt-3 shadow-sm">
+                </div>
+                <div class="col-md-6 pl-md-5">
+                    <div class="row">
+                        <div class="col-6">
+                            <img src="{% static '/images/pic3.jpeg'%}" alt="" class="w-100 shadow-sm">
+                        </div>
+                        <div class="col-6">
+                            <img src="{% static '/images/pic8.jpeg'%}" alt="" class="w-100 shadow-sm">
+                        </div>
+                        <div class="col-12 mt-4">
+                            <p><b>Why choose Post It?</b><br></p>
+                            <p>Our innovative features and comprehensive criteria deliver remarkable results. Enjoy numerous advantages to elevate your posting game.</p>
+                            <p><b>How can you benefit from Post It?</b><br></p>
+                            <p>Simply register, log in, and unlock the full potential. Create captivating posts, update them, and engage with your audience in a visually appealing interface.
+
+                                Join Post It today and experience the power of effective posting. Unleash your creativity, connect with others, and make your voice heard!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            <div class="my-3 my-md-0">
+                <div class="align-items-center">
+                    <div class="row mt-3 justify-content-center">
+                        <a href="login" class="btn btn-primary btn-lg rounded">Post It!</a>
+                    </div>
+                </div>
+            </div>           
+        </div>
+    </section>
+    <!-- End OF About Section -->
+
+    {% if authenticated is True %}
+
+    <!-- Select Option Section -->
+    <section id="your_post_option" class="section has-img-bg pb-0">
+        <div class="container">
+            <h6 class="section-title mt-2 text-center">Select an option for your post</h6>
+            <div class="row mt-3 justify-content-center pt-4 pb-5">
+                <div class="radiogroup">
+                    <div class="wrapper">
+                    <input class="state" type="radio" name="radio" id="radio-create" onclick="openCreate();closeGet();closeUpdate();closeDelete();" />
+                    <label class="label" for="radio-create">
+                        <div class="indicator"></div>
+                        <span class="radioText">Create new post</span>
+                    </label>
+                    </div>
+                    <div class="wrapper">
+                    <input class="state" type="radio" name="radio" id="radio-get" onclick="openGet();closeCreate();closeUpdate();closeDelete();" />
+                    <label class="label" for="radio-get">
+                        <div class="indicator"></div>
+                        <span class="radioText">Get post</span>
+                    </label>
+                    </div>
+                    <div class="wrapper">
+                        <input class="state" type="radio" name="radio" id="radio-update" onclick="openUpdate();closeCreate();closeGet();closeDelete();" />
+                        <label class="label" for="radio-update">
+                            <div class="indicator"></div>
+                            <span class="radioText">Update post</span>
+                        </label>
+                    </div>
+                    <div class="wrapper">
+                        <input class="state" type="radio" name="radio" id="radio-delete" onclick="openDelete();closeCreate();closeGet();closeUpdate();" />
+                        <label class="label" for="radio-delete">
+                            <div class="indicator"></div>
+                            <span class="radioText">Delete post</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            {% if get_post_details is not none or update_post_details is not none or deletemessage is not none %}
+
+            <div class="row mt-3 justify-content-center pt-4 pb-5">
+                {% if get_post_details is not none %}
+                <div class="col-md-6">
+                    <div class="card mb-4 mb-md-0">
+                        <div class="card-body">
+                            {% if get_post_details.message == "success" %}
+                            <small class="text-primary font-weight-bold">{{get_post_details.id}}</small>
+                            <h5 class="text-primary card-title mt-3">{{get_post_details.title}}</h5>
+                            <p class="text-primary mb-0">{{get_post_details.content}}</p>
+                            {% else %}
+                            <small class="text-primary font-weight-bold">{{get_post_details.id}}</small>
+                            <h5 class="text-primary card-title mt-3">{{get_post_details.message}}</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if update_post_details is not none %}
+                <div class="col-md-6">
+                    <div class="card mb-4 mb-md-0">
+                        <div class="card-body">
+                            {% if update_post_details.message == "success" %}
+                            <small class="text-primary font-weight-bold">{{update_post_details.id}}</small>
+                            <h5 class="text-primary card-title mt-3">{{update_post_details.title}}</h5>
+                            <p class="text-primary mb-0">{{update_post_details.content}}</p>
+                            {% else %}
+                            <small class="text-primary font-weight-bold">{{update_post_details.id}}</small>
+                            <h5 class="text-primary card-title mt-3">{{update_post_details.message}}</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if deletemessage is not none %}
+                <div class="col-md-6">
+                    <div class="card mb-4 mb-md-0">
+                        <div class="card-body">
+                            <small class="text-primary font-weight-bold">{{deletemessage}}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+            {% endif %}
+        </div>
+    </section> 
+    <!-- End of Select Option Section -->
+
+    <script>
+        const openCreate = () => {
+            var modal = document.getElementById("C_post");
+            modal.style.display = "block";
+        
+        }
+        const closeCreate = () => {
+            var modal = document.getElementById("C_post");
+            modal.style.display = "none";
+        
+        }
+        const openGet = () => {
+            var modal = document.getElementById("G_post");
+            modal.style.display = "block";
+        
+        }
+        const closeGet = () => {
+            var modal = document.getElementById("G_post");
+            modal.style.display = "none";
+        
+        }
+        const openUpdate = () => {
+            var modal = document.getElementById("U_post");
+            modal.style.display = "block";
+        
+        }
+        const closeUpdate = () => {
+            var modal = document.getElementById("U_post");
+            modal.style.display = "none";
+        
+        }
+        const openDelete = () => {
+            var modal = document.getElementById("D_post");
+            modal.style.display = "block";
+        
+        }
+        const closeDelete = () => {
+            var modal = document.getElementById("D_post");
+            modal.style.display = "none";
+        
+        }
+
+        window.onclick = function (event) {
+            var C_post = document.getElementById("C_post");
+            var G_post = document.getElementById("G_post");
+            var U_post = document.getElementById("U_post");
+            var D_post = document.getElementById("D_post");
+
+            if (event.target == C_post) {
+                C_post.style.display = "none";
+            }
+            if (event.target == G_post) {
+                G_post.style.display = "none";
+            }
+            if (event.target == U_post) {
+                U_post.style.display = "none";
+            }
+            if (event.target == D_post) {
+                D_post.style.display = "none";
+            }
+        }
+        
+    </script>
+
+    <!-- create post Section -->
+    <section id="C_post" class="section has-img-bg pb-0 modal">
+        <div class="container">
+            <span class="close" onclick="closeCreate()">&times;</span>
+            <div class="col-md-7">
+                <form action="post" method="post">
+                    {% csrf_token %} 
+                    <!-- implemented to avoid malicious attacks. It generates
+                    a token on the server-side when rendering the page and
+                    makes sure to cross-check this token for any requests coming back in.-->
+                    <h4 class="mb-4">Create new post</h4>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <input class="form-control text-white rounded-0 bg-transparent" type="text" name="title" placeholder="Title">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <input class="form-control text-white rounded-0 bg-transparent" type="text" name="content" placeholder="Content">
+                        </div>
+                        <div class="form-group col-12 mb-0">
+                            <button type="submit" class="btn btn-primary rounded w-md mt-3">Post</button>
+                        </div>                          
+                    </div>                          
+                </form>
+
+                <div class="text-primary mt-5 mb-5">
+                    {% for message in messages%}
+                        <h6>{{message}}</h6>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <!-- Page Footer -->
+            <footer class="mt-5 py-4 border-top border-secondary">
+                <p></p>     
+            </footer>
+            <!-- End of Page Footer -->
+        </div>
+    </section> 
+    <!-- End Of create post Section -->
+
+
+    <!-- get post Section -->
+    <section id="G_post" class="section has-img-bg pb-0 modal">
+        <div class="container">
+            <span class="close" onclick="closeGet()">&times;</span>
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="G_post" method="post">
+                        {% csrf_token %} 
+                        <!-- implemented to avoid malicious attacks. It generates
+                        a token on the server-side when rendering the page and
+                        makes sure to cross-check this token for any requests coming back in.-->
+                        <h4 class="mb-4">Get your post by its ID</h4>
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                <input class="form-control text-white rounded-0 bg-transparent" type="text" name="id" placeholder="Enter post Id">
+                            </div>
+                            <div class="form-group col-12 mb-0">
+                                <button type="submit" class="btn btn-primary rounded w-md mt-3">Get</button>
+                            </div>                          
+                        </div>                          
+                    </form>
+
+                    <div class="text-primary mt-5 mb-5">
+                        {% for message in messages%}
+                            <h6>{{message}}</h6>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+            <!-- Page Footer -->
+            <footer class="mt-5 py-4 border-top border-secondary">
+                <p></p>     
+            </footer>
+            <!-- End of Page Footer --> 
+        </div>
+    </section> 
+    <!-- End Of get post Section -->
+
+    <!-- update post Section -->
+    <section id="U_post" class="section has-img-bg pb-0 modal">
+        <div class="container">
+            <span class="close" onclick="closeUpdate()">&times;</span>
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="U_post" method="post">
+                        {% csrf_token %} 
+                        <!-- implemented to avoid malicious attacks. It generates
+                        a token on the server-side when rendering the page and
+                        makes sure to cross-check this token for any requests coming back in.-->
+                        <h4 class="mb-4">Update your post by its ID</h4>
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                <input class="form-control text-white rounded-0 bg-transparent" type="text" name="id" placeholder="Enter post Id">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <input class="form-control text-white rounded-0 bg-transparent" type="text" name="title" placeholder="Title">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <input class="form-control text-white rounded-0 bg-transparent" type="text" name="content" placeholder="Content">
+                            </div>
+                            <div class="form-group col-12 mb-0">
+                                <button type="submit" class="btn btn-primary rounded w-md mt-3">Update</button>
+                            </div>                          
+                        </div>                          
+                    </form>
+
+                    <div class="text-primary mt-5 mb-5">
+                        {% for message in messages%}
+                            <h6>{{message}}</h6>
+                        {% endfor %}
+                    </div>
+                </div>
+            
+            </div>
+            <!-- Page Footer -->
+            <footer class="mt-5 py-4 border-top border-secondary">
+                <p></p>     
+            </footer>
+            <!-- End of Page Footer -->
+        </div>
+    </section> 
+    <!-- End Of update post Section -->
+
+    <!-- delete post Section -->
+    <section id="D_post" class="section has-img-bg pb-0 modal">
+        <div class="container">
+            <span class="close" onclick="closeDelete()">&times;</span>
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="D_post" method="post">
+                        {% csrf_token %} 
+                        <!-- implemented to avoid malicious attacks. It generates
+                        a token on the server-side when rendering the page and
+                        makes sure to cross-check this token for any requests coming back in.-->
+                        <h4 class="mb-4">Delete your post by its ID</h4>
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                <input class="form-control text-white rounded-0 bg-transparent" type="text" name="id" placeholder="Enter post Id">
+                            </div>
+                            <div class="form-group col-12 mb-0">
+                                <button type="submit" class="btn btn-primary rounded w-md mt-3">Delete</button>
+                            </div>                          
+                        </div>                          
+                    </form>
+
+                    <div class="text-primary mt-5 mb-5">
+                        {% for message in messages%}
+                            <h6>{{message}}</h6>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                
+            </div>
+            <!-- Page Footer -->
+            <footer class="mt-5 py-4 border-top border-secondary">
+                <p></p>     
+            </footer>
+            <!-- End of Page Footer --> 
+        </div>
+    </section> 
+    <!-- End Of delete post Section -->
+
+
+    <!-- allposts Section -->
+    <section id="allposts" class="section">
+        <div class="container">
+            <h6 class="section-title text-center">Posts</h6>
+            <h6 class="section-subtitle text-center mb-5 pb-3"> You can see all posts here </h6>
+
+            <div class="my-3 my-md-0 mb-5 pb-5">
+                <div class="align-items-center">
+                    <div class="row mt-3 justify-content-center">
+                        <a href="allposts" class="btn btn-primary btn-lg rounded">Show all Posts</a>
+                    </div>
+                </div>
+            </div>
+
+            {% if allposts.postsExist is not none %}
+            <div class="row">
+                {% if allposts.postsList|length %}
+                {% for post in allposts.postsList %}
+                    <div class="col-md-6">
+                        <div class="card mb-4 mb-md-0">
+                            <div class="card-body">
+                                <small class="text-primary font-weight-bold">{{post.id}}</small>
+                                <h5 class="card-title mt-3">{{post.title}}<h5>
+                                <p class="mb-0">{{post.content}}</p>
+                                <p class="mb-0">Author: {{post.author_name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-md-6">
+                    <div class="card mb-4 mb-md-0">
+                        <div class="card-body">
+                            <small class="text-primary font-weight-bold">There are no posts :(</small>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <!-- End Of allposts Section -->
+
+
+
+    {% endif %}
+
+    <!-- OurTeam Section -->
+    <section class="section" id="OurTeam">
+        <div class="container">
+            <h6 class="section-title text-center mb-0">Our Team</h6>
+            <h6 class="section-subtitle mb-5 text-center">Who is the developer?</h6>
+            <div class="card">
+                <div class="card-body">
+                    <div class="media align-items-center mb-3">
+                        <img class="mr-3" src="{% static '/images/developer.jpeg'%}" alt="">
+                        <div class="media-body">
+                            <h6 class="mt-1 mb-0">Zainab Melaibari</h6>
+                            <small class="text-muted mb-0">Artificial Intelligence</small>     
+                        </div>
+                    </div>
+                    <p class="mb-0">Artificial Intelligence major, web and game developer, and passionate programmer who seeks to create valuable solutions for people.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End of OurTeam Section -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="section has-img-bg pb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 my-3 my-md-0">
+                    <h6 class="mb-0">Phone</h6>
+                    <p class="mb-4">+ 966-500103424</p>
+                </div>
+                <div class="col-md-4 my-3 my-md-0">
+                    <h6 class="mb-0">Address</h6>
+                    <p class="mb-4">Hamzah Ibn Al Qasim St, Al Sharafeyah, Jeddah 23218</p>
+                </div>
+                <div class="col-md-4 my-3 my-md-0">
+                    <h6 class="mb-0">Email</h6>
+                    <p class="mb-4">zainab.a.melaibari@gmail.com</p>
+                </div>
+            </div>
+            <!-- Page Footer -->
+            <footer class="mt-5 py-4 border-top border-secondary">
+                <p class="mb-0 small">&copy; <script>document.write(new Date().getFullYear())</script>, Post It, Created By Zainab </p>     
+            </footer>
+            <!-- End of Page Footer -->  
+        </div>
+    </section>
+	
+	<!-- core  -->
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="{% static '/website_home/vendors/jquery/jquery-3.4.1.js'%}"></script>
+    <script src="{% static '/website_home/vendors/bootstrap/bootstrap.bundle.js'%}"></script>
+
+    <!-- bootstrap 3 affix -->
+	<script src="{% static '/website_home/vendors/bootstrap/bootstrap.affix.js'%}"></script>
+
+    <!-- Isotope -->
+    <script src="{% static '/website_home/vendors/isotope/isotope.pkgd.js'%}"></script>
+
+    <!-- LeadMark js -->
+    <script src="{% static '/website_home/js/leadmark.js'%}"></script>
+
+</body>
+</html>

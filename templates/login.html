@@ -1,0 +1,114 @@
+{% load static %}
+{% static "/static" as baseUrl %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Detect It | Login</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- font icons -->
+    <link rel="stylesheet" href="{% static '/website_home/vendors/themify-icons/css/themify-icons.css'%}">
+    <!-- Bootstrap + LeadMark main styles -->
+	<link rel="stylesheet" href="{% static '/website_home/css/leadmark.css'%}">
+    <link rel="icon" href="{% static '/images/postslogo.png'%}" type = "image/x-icon" >
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="40" id="login">
+    
+    <!-- page Navigation -->
+    <nav class="navbar custom-navbar navbar-expand-md navbar-light fixed-top" data-spy="affix" data-offset-top="10">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{% static '/images/postslogo.png'%}" alt="">
+            </a>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">                     
+        
+                    {% if authenticated is True %}
+                    <li class="nav-link text-primary font-weight-bold">Hello, {{name}}</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Of Second Navigation -->
+
+    <!-- Page Header -->
+    <header class="mt-4">
+        <div class="overlay"> 
+        </div>   
+        <div class="wheel"></div>
+    </header>
+    <!-- End Of Page Header -->
+
+    <!-- login form -->
+    <section class="section has-img-bg pb-0">
+        <div class="container">
+            <div class="col-md-7">
+                <form action="login" method="post">
+                    {% csrf_token %} 
+                    <!-- implemented to avoid malicious attacks. It generates
+                    a token on the server-side when rendering the page and
+                    makes sure to cross-check this token for any requests coming back in.-->
+                    <h4 class="mb-4">Login</h4>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <input class="form-control text-white rounded-0 bg-transparent" type="email" name="email" placeholder="Email">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <input class="form-control text-white rounded-0 bg-transparent" type="password" name="password" placeholder="Password">
+                        </div>
+                        <div class="form-group col-12 mb-0">
+                            <button type="submit" class="btn btn-primary rounded w-md mt-3">Send</button>
+                        </div>                          
+                    </div>                          
+                </form>
+
+                <div class="text-primary mt-5 mb-5">
+                    {% for message in messages%}
+                        <h6>{{message}}</h6>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <!-- Page Footer -->
+            <footer class="mt-5 py-4 border-top border-secondary">
+                <p></p>     
+            </footer>
+            <!-- End of Page Footer --> 
+        </div>
+    </section>
+        
+    <!-- End Of Page Header -->
+    <!-- core  -->
+    <script src="{% static '/website_home/vendors/jquery/jquery-3.4.1.js'%}"></script>
+    <script src="{% static '/website_home/vendors/bootstrap/bootstrap.bundle.js'%}"></script>
+
+    <!-- bootstrap 3 affix -->
+    <script src="{% static '/website_home/vendors/bootstrap/bootstrap.affix.js'%}"></script>
+
+    <!-- Isotope -->
+    <script src="{% static '/website_home/vendors/isotope/isotope.pkgd.js'%}"></script>
+
+    <!-- LeadMark js -->
+    <script src="{% static '/website_home/js/leadmark.js'%}"></script>
+</body>
+</html>
+
